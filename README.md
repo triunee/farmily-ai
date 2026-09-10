@@ -40,19 +40,6 @@ Bedrock(Claude) 기반 에이전트가 만들고, 카드 이미지를 렌더링�
 [RDS PostgreSQL 16 + pgvector]  결과 저장 · job 상태 DONE
 ```
 
-### 도구 6개, 왜 4 + 2로 나눴나
-
-6개 도구 함수는 모두 Strands `@tool` 로 정의돼 있지만 노출 방식이 다르다.
-
-- **항상 필요한 결정적 조회 4개** (`get_diary` · `get_crop_info` · `get_content_history` ·
-  `search_trend`) — LLM에 노출하지 않고 핸들러에서 `ThreadPoolExecutor` 로 **병렬 사전조회**해
-  프롬프트에 주입한다. LLM 왕복이 사라져 지연·토큰이 줄어든다.
-- **각도에 따라 갈리는 조건부 검색 2개** (`search_recipe` · `search_local_specialty`) — `_TOOLS`
-  로 에이전트에 넘겨 Claude가 각도를 정한 뒤 필요할 때만 호출한다.
-
-`tools.py` 의 각 함수는 Action Group Lambda를 거치지 않고 `farmily_utils.get_connection()` 으로
-DB를 직접 조회한다.
-
 ---
 
 ## 콘텐츠 각도 (prompts/angles/)
@@ -118,15 +105,6 @@ db/
 ```
 
 각 디렉터리에 세부 README 있음.
-
-### 두 세대의 오케스트레이션
-
-- **레거시**: `lambdas/generate-content` → `bedrock-agent-runtime.invoke_agent()` (관리형 Agent)
-  → Action Group Lambda(`get-*`, `search-*`) → 템플릿 주입 → 카드 렌더.
-- **현행**: Spring 백엔드 → `agent/` 컨테이너 (Strands + prefetch) → 카드 렌더.
-  Action Group Lambda의 로직은 `agent/tools.py` 의 `@tool` 로 이관됨.
-
-두 경로의 코드를 모두 보존해 변천 과정을 남겼다.
 
 ---
 
