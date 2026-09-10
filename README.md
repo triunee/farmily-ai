@@ -4,8 +4,8 @@
 인스타그램 캡션·해시태그, 카드 이미지용 텍스트(textPool), 스마트스토어 상세 문구를
 Bedrock(Claude) 기반 에이전트가 만들고, 카드 이미지를 렌더링해 S3에 저장한다.
 
-이 저장소는 Farmily의 AI 파이프라인 전체를 한곳에 모은 스냅샷이다 — 현행 AgentCore
-에이전트(`agent/`), 콘텐츠 생성·유틸 Lambda(`lambdas/`), 시드 데이터 생성 스크립트
+이 저장소는 Farmily의 AI 파이프라인 전체를 한곳에 모은 스냅샷이다 — 현행 에이전트
+컨테이너(`agent/`), 콘텐츠 생성·유틸 Lambda(`lambdas/`), 시드 데이터 생성 스크립트
 (`data-pipeline/`), DB 스키마(`db/`).
 
 ---
@@ -16,7 +16,9 @@ Bedrock(Claude) 기반 에이전트가 만들고, 카드 이미지를 렌더링�
 [Spring Boot 백엔드]
     │  BedrockAgentClient.invoke() → POST /invocations
     ▼
-[AgentCore 에이전트 컨테이너]  ECS Fargate(prod-cluster), BedrockAgentCoreApp 하니스 :8080
+[에이전트 컨테이너]  ECS Fargate(prod-cluster)
+    │  bedrock_agentcore SDK의 BedrockAgentCoreApp 으로 /invocations, :8080 노출
+    │  에이전트 루프는 Strands Agents SDK로 직접 구현 (관리형 런타임 아님)
     │
     ├─ ① prefetch — 핸들러에서 병렬 사전조회 (LLM 왕복 없음, ThreadPoolExecutor)
     │     ├ get_diary            영농일지 조회
@@ -82,8 +84,8 @@ Claude가 일지·이력을 보고 아래 중 하나를 골라 그 각도의 가
 ## 디렉터리 구조
 
 ```
-agent/                          AgentCore 에이전트 컨테이너 (현행)
-├── agent.py                    @app.entrypoint 핸들러 — prefetch → Strands Agent → 카드 렌더 → DB
+agent/                          에이전트 컨테이너 (현행) — ECS Fargate에서 실행
+├── agent.py                    @app.entrypoint 핸들러 (BedrockAgentCoreApp) — prefetch → Strands Agent → 카드 렌더 → DB
 ├── tools.py                    @tool 6개 (prefetch 4 + LLM 노출 2), DB 직접 조회
 ├── farmily_utils.py            DB 커넥션 풀 · Bedrock 임베딩 · 입력 안전 필터
 ├── prompts/
@@ -130,7 +132,9 @@ db/
 
 ## 인프라
 
-- **런타임**: ECS Fargate (`prod-cluster`) — `BedrockAgentCoreApp` 하니스로 패키징한 Strands 컨테이너
+- **런타임**: ECS Fargate (`prod-cluster`). 컨테이너는 `bedrock_agentcore` SDK의
+  `BedrockAgentCoreApp` 으로 표준 호출 인터페이스(`/invocations`, :8080)만 노출하고,
+  에이전트 루프는 Strands Agents SDK로 직접 구현 (Bedrock 관리형 런타임 아님)
 - **서비스 디스커버리**: Cloud Map (`farmily-agentcore.farmily.local`)
 - **로그 / 메트릭**: CloudWatch Logs `/ecs/farmily-agentcore`, 커스텀 메트릭 `Farmily/AgentCore`
 - **CI/CD**: GitHub Actions → ECR Push → ECS Rolling Deploy
