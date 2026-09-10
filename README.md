@@ -1,7 +1,7 @@
 # farmily-ai
 
 Farmily 농업 콘텐츠 생성 AI 파이프라인. Bedrock 기반 에이전트 + 콘텐츠 생성 Lambda +
-트렌드 수집 Step Functions + 시드 데이터 생성 스크립트.
+시드 데이터 생성 스크립트.
 
 ## 구조
 
@@ -12,7 +12,6 @@ lambdas/          콘텐츠 생성 경로의 개별 Lambda (에이전트 툴)
                   generate-content(오케스트레이터) · get-diary · get-crop-info
                   get-content-history · search-recipe · search-local-specialty
                   search-trend · batch-embed · card-renderer · select-photo · alarm-to-slack
-trend-pipeline/   Step Functions: 트렌드 일일 수집·요약 (collectors/ → aggregate-report/)
 data-pipeline/    시드 데이터셋 생성 스크립트 (크롤·전처리·SQL 생성). 데이터 파일 미포함
 db/               PostgreSQL(+pgvector) 마이그레이션 / seed
 ```
