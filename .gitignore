@@ -49,3 +49,8 @@ package/
 *.tsv
 data/
 output/
+
+# 대용량 데이터 seed (data-pipeline 스크립트로 생성)
+db/seeds/insert_recipes.sql
+db/seeds/insert_crop_knowledge.sql
+db/seeds/seed_farming_journals*.sql
