@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+
+# 가상환경
+.venv/
+venv/
+env/
+
+# 환경변수 / 시크릿
+.env
+.env.*
+!.env.example
+
+# 테스트 / 커버리지
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# 백업 파일
+*.bak
+*.orig
+
+# 빌드 산출물 / 패키징
+node_modules/
+*.zip
+package/
+*-pkg/
+
+# 데이터 (원천/산출 데이터는 커밋하지 않음 — 생성 스크립트만)
+*.csv
+*.parquet
+*.tsv
+data/
+output/
