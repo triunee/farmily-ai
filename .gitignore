@@ -54,3 +54,9 @@ output/
 db/seeds/insert_recipes.sql
 db/seeds/insert_crop_knowledge.sql
 db/seeds/seed_farming_journals*.sql
+
+# 폰트 바이너리 (fonts/README.md 참고해 로컬에서 받기)
+*.ttf
+*.otf
+*.woff
+*.woff2

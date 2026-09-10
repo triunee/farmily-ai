@@ -16,7 +16,7 @@ Bedrock Agent의 Action Group 툴로 호출된다. `farmily_utils.py`는 모든 
 | `search-local-specialty/` | Python | 지역 특산물 RAG 검색 |
 | `search-trend/` | Python | `trend_reports`/`trend_insights` 조회 (트라이그램 + 벡터 하이브리드). `../trend-pipeline`이 적재한 데이터를 읽는다 |
 | `batch-embed/` | Python | `recipe_embeddings`/`local_specialty`/`trend_insights`의 `embedding IS NULL` 행을 Titan V2로 임베딩 |
-| `card-renderer/` | Node.js | Puppeteer로 HTML 카드 → PNG 렌더. `fonts/`는 런타임 필수, `node_modules`는 제외(배포 시 설치) |
+| `card-renderer/` | Node.js | Puppeteer로 HTML 카드 → PNG 렌더. `node_modules`·폰트 바이너리는 제외 — `fonts/README.md` 보고 폰트 받고 배포 시 `npm i` |
 | `select-photo/` | Python | 일지 사진 중 카드용 대표 이미지 선별 |
 | `alarm-to-slack/` | Python | CloudWatch 경보 → SNS → Slack Webhook 포맷 변환 |
 

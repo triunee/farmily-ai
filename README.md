@@ -24,5 +24,6 @@ db/               PostgreSQL(+pgvector) 마이그레이션 / seed
 - `agent/`는 조직 레포(`urbanworkteam/AI`)에서 코드만 clean copy로 이관. 커밋 히스토리 미포함.
 - `.github/workflows/deploy.yml.disabled` — 원본의 ECS 자동 배포 CI. 조직 인프라 전용이라
   확장자를 바꿔 비활성화(참고용 보존). 내부 경로는 `agent/` 이동을 반영하지 않은 상태.
-- 원천/산출 데이터(CSV·대용량 JSON·SQL 덤프)와 `node_modules`는 커밋하지 않는다.
+- 원천/산출 데이터(CSV·대용량 JSON·SQL 덤프), `node_modules`, 폰트 바이너리는 커밋하지 않는다
+  (폰트는 `lambdas/card-renderer/fonts/README.md` 참고).
 - 모든 설정은 환경변수로 주입. 하드코딩된 자격증명·계정 ID·엔드포인트 없음.
