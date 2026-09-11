@@ -13,8 +13,6 @@ Farmily AI 파이프라인의 시드 데이터셋을 만드는 **생성 스크�
 | `diary/` | 영농일지 시드 (4농가 × 36일지) | `preprocess.py`, `make_custom_selection.py`, `refine_diaries.py`, `generate_seed_sql.py` |
 | `diary/` (특산물) | 지역 특산물 RAG | `generate_local_specialty_sql.py` |
 
-> 개발 중 세 폴더가 서로 파일을 복사해 써서 `insert_recipes.py` 등 동일 스크립트가 중복 존재한다.
-> 정본은 `recipe/` 쪽이다. 나머지는 각 폴더 자기완결성을 위해 남겨둔 사본.
 
 ## 영농일지 파이프라인
 
